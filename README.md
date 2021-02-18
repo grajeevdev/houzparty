@@ -1,13 +1,13 @@
 # houzparty
 Now annoy your friends with your unholy music taste!
 
-*** Currently under development. Beta should be ready by week of 21st February***
+***Currently under development. Beta should be ready by week of 21st February***
 
 ## Backend
 
 Uses Django to serve two apps: myapp - a Room Controller, spotify - a Spotify API communicator
 
-##Frontend
+## Frontend
 
 Uses React to render a purely functional frontend. Uses React Hooks and latest React functional paradigms as of React v16.6
 
