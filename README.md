@@ -17,19 +17,18 @@ Uses React to render a purely functional frontend. Uses React Hooks and latest R
    `git status https://github.com/grajeevdev/houzparty.git`
 
 2. Enter the folder and navigate to frontend
-    'cd ./frontend'
+    `cd ./frontend`
 
 3. Install required React dependencies
-    'npm install'
+    `npm install`
 
 4. navigate to base directory and run django server :
-    'cd..
-     python manage.py runserver
-    '
+    `cd..`
+    `python manage.py runserver`
 (Optional)
 
 5. If you wish to make modifications to the front end, keep the webpack script running in the frontend folder
-    'npm run dev' 
+    `npm run dev` 
     
     
 ### Have fun!
