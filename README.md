@@ -1,7 +1,15 @@
 # houzparty
 Now annoy your friends with your unholy music taste!
 
-***Currently under development. Beta should be ready by week of 21st February***
+***v1.0.0 is live!***
+
+## Features
+Collaborative listening via rooms. Join rooms where the vibe of your house party is democratized. 
+Allow individual users to vote on repeats or skips.
+Allow guests to control track playback.
+Or dont.
+
+Its your party, after all :P
 
 ## Backend
 
