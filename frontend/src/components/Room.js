@@ -20,7 +20,9 @@ import MediaPlayer from "./MediaPlayer";
 
 import Cookies from "js-cookie";
 
-function Room(props) {
+function Room({ props = {}, callback = {} } = {}) {
+  console.log(props);
+  console.log(callback);
   const history = useHistory();
   const [roomCode, setRoomCode] = useState(props.match.params.roomCode);
   const [guestCanPause, setGuestCanPause] = useState(false);
@@ -100,7 +102,7 @@ function Room(props) {
           </Typography>
         </Grid>
         <Grid item xs={12} align="center">
-          <MediaPlayer {...song} />
+          <MediaPlayer {...song}/>
         </Grid>
         <Grid item xs={12} align="center">
           <Button
@@ -113,7 +115,7 @@ function Room(props) {
             Leave Room
           </Button>
         </Grid>
-        {isHost?renderSettingsButton():null}
+        {isHost ? renderSettingsButton() : null}
       </Grid>
     ) : (
       <Grid container spacing={1}>
@@ -237,6 +239,7 @@ function Room(props) {
       },
     };
     await fetch("/myapp/leave-room", requestOptions).then((_response) => {
+      callback();
       history.push("/myapp");
     });
   };

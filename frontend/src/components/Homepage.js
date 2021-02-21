@@ -26,7 +26,11 @@ const Homepage = (props) => {
       .then((data) => {
         setRoomCode(data.code);
       });
-  },[]);
+  }, []);
+
+  const handleRoomCodeOnExit = () => {
+    setRoomCode(null);
+  };
 
   const renderHomePage = () => {
     return (
@@ -58,7 +62,7 @@ const Homepage = (props) => {
           path="/myapp/"
           render={() => {
             return roomCode ? (
-              <Redirect to={"/myapp/room/"+roomCode} />
+              <Redirect to={"/myapp/room/" + roomCode} />
             ) : (
               renderHomePage()
             );
@@ -66,7 +70,12 @@ const Homepage = (props) => {
         />
         <Route path="/myapp/join" component={RoomJoin} />
         <Route path="/myapp/create" component={CreateRoomPage} />
-        <Route path="/myapp/room/:roomCode" component={Room} />
+        <Route
+          path="/myapp/room/:roomCode"
+          render={(props) => {
+            return <Room props={props} callback={handleRoomCodeOnExit}/>;
+          }}
+        />
       </Switch>
     </Router>
   );
