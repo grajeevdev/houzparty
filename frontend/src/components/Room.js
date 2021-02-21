@@ -15,8 +15,8 @@ import {
   Slide,
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import useInterval from "./useInterval"
-import MediaPlayer from "./MediaPlayer"
+import useInterval from "./useInterval";
+import MediaPlayer from "./MediaPlayer";
 
 import Cookies from "js-cookie";
 
@@ -29,25 +29,24 @@ function Room(props) {
   const [roomOrSettings, setRoomOrSettings] = useState(true);
   const [isHost, setIsHost] = useState(false);
   const [displayAlert, setDisplayAlert] = useState(false);
-  const spotifyAuthenticated= useRef(false);
-  const [song,setSong] = useState(null)
+  const [song, setSong] = useState(null);
 
-  const getCurrentSong = () =>{
-    fetch("/spotify/current-song").then((response)=>{
-      if(!response.ok){
-        return {};
-      }
-      else{
-        return response.json()
-      }
-    }).then((data)=>{
-      console.log(data);
-      setSong(data);
-    });
-  }
+  const getCurrentSong = () => {
+    fetch("/spotify/current-song")
+      .then((response) => {
+        if (!response.ok) {
+          return {};
+        } else {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        console.log(data);
+        setSong(data);
+      });
+  };
 
-  useInterval(getCurrentSong,1000);
-
+  useInterval(getCurrentSong, 1000);
 
   const handleGuestCanPauseChange = () => {
     setGuestCanPause(guestCanPause == true ? false : true);
@@ -75,29 +74,58 @@ function Room(props) {
     );
   };
 
-  const authenticateSpotify = () =>{
-    fetch('/spotify/is-authenticated').then((response)=>response.json()).then((data)=>{
-      console.log("ALREADY AUTHENTICATED!!!!")
-      spotifyAuthenticated.current=data.status
-      if(!spotifyAuthenticated){
-        fetch('/spotify/get-auth-url').then((response)=>response.json()).then((data)=>{
-          window.location.replace(data.url);
-        });
-      }
-    });
-  }
-
+  const authenticateSpotify = () => {
+    fetch("/spotify/is-authenticated")
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.status) {
+          fetch("/spotify/get-auth-url")
+            .then((response) => response.json())
+            .then((data) => {
+              window.location.replace(data.url);
+            });
+        } else {
+          console.log("ALREADY AUTHENTICATED!!!!");
+        }
+      });
+  };
 
   const renderRoomOrSettings = () => {
     return roomOrSettings ? (
-     //<h1>base</h1>
-      <MediaPlayer {...song}/>
+      //<h1>base</h1>
+      <Grid container spacing={3} alignItems="center">
+        <Grid item xs={12} align="center">
+          <Typography component="h4" variant="h4">
+            ROOM - {roomCode}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} align="center">
+          <MediaPlayer {...song} />
+        </Grid>
+        <Grid item xs={12} align="center">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              handleUserLeavingRoom();
+            }}
+          >
+            Leave Room
+          </Button>
+        </Grid>
+        {isHost?renderSettingsButton():null}
+      </Grid>
     ) : (
-      
       <Grid container spacing={1}>
-          {displayAlert ? (
+        {displayAlert ? (
           <Slide direction="down" in={displayAlert} mountOnEnter unmountOnExit>
-            <Alert severity="success" color="info" onClose={()=>{setDisplayAlert(false);}}>
+            <Alert
+              severity="success"
+              color="info"
+              onClose={() => {
+                setDisplayAlert(false);
+              }}
+            >
               Room successfully updated!
             </Alert>
           </Slide>
@@ -209,7 +237,6 @@ function Room(props) {
       },
     };
     await fetch("/myapp/leave-room", requestOptions).then((_response) => {
-      spotifyAuthenticated.current=false;
       history.push("/myapp");
     });
   };

@@ -37,7 +37,6 @@ def is_spotify_authenticated(session_id):
 
 def refresh_spotify_token(session_id):
     refresh_token=get_user_tokens(session_id).refresh_token
-
     response=post("https://accounts.spotify.com/api/token",data={
         'grant_type':'refresh_token',
         'refresh_token':refresh_token,
@@ -45,10 +44,11 @@ def refresh_spotify_token(session_id):
         'client_secret':Secret
     }).json()
 
+    print(response)
     access_token=response.get('access_token')
     token_type=response.get('token_type')
     expires_in=response.get('expires_in')
-    refresh_token=response.get('refresh_token')
+    refresh_token=refresh_token
 
     update_or_create_user_tokens(session_id,access_token,token_type,expires_in,refresh_token)
 
@@ -68,3 +68,17 @@ def execute_spotify_request(session_id,endpoint,post_=False,put_=False):
         return response.json()
     except:
         return {'error':"Error encountered while communicating with spotify"}
+
+
+def play_song(host):
+    return execute_spotify_request(host,"/player/play",put_=True)
+
+def pause_song(host):
+    return execute_spotify_request(host,"/player/pause",put_=True)
+
+def skip_song(host):
+        return execute_spotify_request(host,"/player/next",post_=True)
+        
+def previous_song(host):
+        return execute_spotify_request(host,"/player/previous",post_=True)
+ 
